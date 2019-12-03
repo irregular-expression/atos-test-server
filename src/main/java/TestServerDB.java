@@ -19,7 +19,7 @@ public class TestServerDB {
     private static TestServerDB database;
 
     // we are using small embedded H2 database
-    private final static String DATABASE_URL = "jdbc:h2:./test"; //"jdbc:h2:mem:test" - for in-memory database
+    private final static String DATABASE_URL = "jdbc:h2:./test"; //here should be a remote jdbc database connection string, "jdbc:h2:mem:test" - for in-memory database
     private JdbcConnectionSource connectionSource;
 
     private Dao<User, String> userDao;

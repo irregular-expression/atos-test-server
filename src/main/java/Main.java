@@ -12,7 +12,8 @@ import static spark.Spark.*;
 public class Main {
     public static void main(String[] args) {
         port(getHerokuAssignedPort());
-        get("/hello", (req, res) -> "App is still running!");
+
+        get("/hello", (req, res) -> "App is still running!"); //To test server availability from browser
 
         //Authorization, no session required - only login and password validation
         get("/auth", (request, response) -> {
@@ -23,13 +24,14 @@ public class Main {
             return new Gson().toJson(auth(login, password));
         });
 
-
+        //Existed meeting rooms list
         get("/rooms", (request, response) -> {
             response.status(200);
             response.type("application/json");
             return new Gson().toJson(getRooms());
         });
 
+        //Existed orders for a meeting room.
         get("/orders", (request, response) -> {
             String roomName = request.queryMap().get("roomName").value();
             response.status(200);
@@ -37,6 +39,7 @@ public class Main {
             return new Gson().toJson(getOrders(roomName));
         });
 
+        //Reserve a room
         post("/reserveRoom", (request, response) -> {
             Order order = (Order) new Gson().fromJson(request.body(), Order.class);
             response.status(200);
@@ -44,6 +47,7 @@ public class Main {
             return new Gson().toJson(addOrder(order));
         });
 
+        //Creates a user. This isn't used in a mobile app. Should be called from web api, for testing - from address bar, like: /createUser?login=Ivanov&password=123&name=Ivanov%20Ivan
         get("/createUser", (request, response) -> {
             String login = request.queryMap().get("login").value();
             String password = request.queryMap().get("password").value();
@@ -53,6 +57,7 @@ public class Main {
             return new Gson().toJson(createUser(new User(login, password, name)));
         });
 
+        //Creates a room. This isn't used in a mobile app. Should be called from web api, for testing - from address bar, like: /createRoom?name=Peregovornaya&description=Wide%20hall&chairsCount=5&projector=true&board=false
         get("/createRoom", (request, response) -> {
             String name = request.queryMap().get("name").value();
             String description = request.queryMap().get("description").value();
